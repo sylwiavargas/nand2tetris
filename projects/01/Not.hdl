@@ -13,5 +13,6 @@ CHIP Not {
     OUT out;
 
     PARTS:
-    // Put your code here:
+    // Nand has two pins vs Not has just one in so both pins need to be clipped together.
+    Nand(a=in, b=in, out=out);
 }

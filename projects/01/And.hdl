@@ -14,5 +14,8 @@ CHIP And {
     OUT out;
 
     PARTS:
-    // Put your code here:
+    // Not+And, saves output to tmp
+    Nand(a=a, b=b, out=tmp);
+    // negates the output (negates the Not)
+    Not(in=tmp, out=out);
 }
