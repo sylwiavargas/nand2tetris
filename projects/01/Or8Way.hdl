@@ -14,8 +14,7 @@ CHIP Or8Way {
     OUT out;
 
     PARTS:
-    /* Successively feed the outputs of the previous Or, to keep comparing 
-    the individual bits. */
+    // Keep comparing bits to end up with a single output
      Or(a=in[0], b=in[1], out=tmp);
      Or(a=in[2], b=tmp, out=tmp1);
      Or(a=in[3], b=tmp1, out=tmp2);
