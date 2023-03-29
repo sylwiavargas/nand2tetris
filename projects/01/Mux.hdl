@@ -14,5 +14,11 @@ CHIP Mux {
     OUT out;
 
     PARTS:
-    // Put your code here:
+    // negates the selector (sel)
+    Not(in=sel, out=notSel);
+    // selects the input
+    And(a=a, b=notSel, out=outA);
+    And(a=b, b=sel, out=outB);
+    // combines into a common output
+    Or(a=outA, b=outB, out=out);
 }

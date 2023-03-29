@@ -9,10 +9,17 @@
  *                        b[i] if sel == 1
  */
 
-CHIP Mux16 {
-    IN a[16], b[16], sel;
-    OUT out[16];
+
+CHIP Mux {
+    IN a, b, sel;
+    OUT out;
 
     PARTS:
-    // Put your code here:
+    // negates the selector (sel)
+    Not(in=sel, out=notSel);
+    // selects the input
+    And(a=a, b=notSel, out=outA);
+    And(a=b, b=sel, out=outB);
+    // combines into a common output
+    Or(a=outA, b=outB, out=out);
 }
