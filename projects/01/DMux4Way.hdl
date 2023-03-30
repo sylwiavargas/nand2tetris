@@ -11,10 +11,15 @@
  *                {0, 0, 0, in} if sel == 11
  */
 
+
 CHIP DMux4Way {
     IN in, sel[2];
     OUT a, b, c, d;
 
     PARTS:
-    // Put your code here:
+    // select ab or cd
+    DMux(in=in, sel=sel[1], a=outAB, b=outCD);
+    // select the final output inside dmux gates (second selector)
+    DMux(in=outAB, sel=sel[0], a=a, b=b);
+    DMux(in=outCD, sel=sel[0], a=c, b=d);
 }
