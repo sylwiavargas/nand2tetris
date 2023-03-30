@@ -14,5 +14,9 @@ CHIP DMux {
     OUT a, b;
 
     PARTS:
-    // Put your code here:
+    // negate the selector
+    Not(in=sel, out=notSell);
+    // filter the values
+    And(a=in, b=notSell, out=a);
+    And(a=in, b=sel, out=b);
 }
