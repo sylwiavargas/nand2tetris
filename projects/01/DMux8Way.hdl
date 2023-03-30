@@ -15,6 +15,18 @@ CHIP DMux8Way {
     IN in, sel[3];
     OUT a, b, c, d, e, f, g, h;
 
+    // how to do it with DMux4Way gates?
     PARTS:
-    // Put your code here:
+    // select abcd or efgh
+    DMux(in=in, sel=sel[2], a=outABCD, b=outEFGH);
+
+    // narrow down (second selector)
+    DMux(in=outABCD, sel=sel[1], a=outAB, b=outCD);
+    DMux(in=outEFGH, sel=sel[1], a=outEF, b=outGH);
+
+    // select final output (third selector)
+    DMux(in=outAB, sel=sel[0], a=a, b=b);
+    DMux(in=outCD, sel=sel[0], a=c, b=d);
+    DMux(in=outEF, sel=sel[0], a=e, b=f);
+    DMux(in=outGH, sel=sel[0], a=g, b=h);
 }
