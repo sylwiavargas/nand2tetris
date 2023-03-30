@@ -17,6 +17,17 @@ CHIP Mux8Way16 {
        sel[3];
     OUT out[16];
 
+    // could be done using Mux4Way16 gates
+
     PARTS:
-    // Put your code here:
+    // choose between pairs of inputs
+    Mux16(a=a, b=b, sel=sel[0], out=o1);
+    Mux16(a=c, b=d, sel=sel[0], out=o2);
+    Mux16(a=e, b=f, sel=sel[0], out=o3);
+    Mux16(a=g, b=h, sel=sel[0], out=o4);
+    // narrow it down
+    Mux16(a=o1, b=o2, sel=sel[1], out=o5);
+    Mux16(a=o3, b=o4, sel=sel[1], out=o6);
+    // choose the final output
+    Mux16(a=o5, b=o6, sel=sel[2], out=out);
 }
