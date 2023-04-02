@@ -13,5 +13,8 @@ CHIP HalfAdder {
         carry;  // Left bit of a + b
 
     PARTS:
-    // Put you code here:
+    // if either is 1, sum is 1
+    Xor(a=a, b=b, out=sum);
+    // if both are 1, carry is 1
+    And(a=a, b=b, out=carry);
 }
