@@ -13,5 +13,9 @@ CHIP Inc16 {
     OUT out[16];
 
     PARTS:
-   // Put you code here:
+    // a is the input
+    // b is 16 bits that are 0s
+    // set the rightmost bit to 1 (can't be b[0]=1 because "1" is not a name for a pin so hdl is shouting at me)
+    // add both
+    Add16(a=in, b[0]=true, out=out);
 }
