@@ -42,5 +42,36 @@ CHIP ALU {
         ng; // 1 if (out < 0),  0 otherwise
 
     PARTS:
-   // Put you code here:
+    // zero the x input
+    Mux16(a=x, b=false, sel=zx, out=xZero); // we set the sel to 0 or 1 depending on the operation we want to perform
+
+    // negate the x input
+    Not16(in=xZero, out=xNot); // we negate the previous output
+    Mux16(a=xZero, b=xNot, sel=nx, out=xNegated); // based on the two outputs and sel (which depends on the operation), we see if the final output should be negated
+
+    // zero the y input
+    Mux16(a=y, b=false, sel=zy, out=yZero);
+
+    // negate the y input
+    Not16(in=yZero, out=yNot);
+    Mux16(a=yZero, b=yNot, sel=ny, out=yNegated);
+
+    // compute out = x + y (if 1) or x & y (if 0)
+    Mux16(a=false, b=yNegated, sel=f, out=out1); // when f=0 return 0, and return y when f=1
+    Add16(a=xNegated, b=out1, out=addXY); // now add xNegated (if it's 0, nothing changes)
+    And16(a=xNegated, b=yNegated, out=andXY); // handles the "x & y" part
+    Mux16(a=andXY, b=addXY, sel=f, out=fXY); // returns either the "x & y" or "x + y"
+
+    // negate the output for the next step so there are two options
+    Not16(in=fXY, out=notfXY);
+
+    // out=16-bit output; 
+    // ng=1 if (out < 0),  0 otherwise
+    // no -> should the output be negated?
+    Mux16(a=fXY, b=notfXY, sel=no, out=out, out[15]=ng, out[0..7]=msb, out[8..15]=lsb); // splitting the bits to establish if the least significant bits feature a 1 (2s compliment) to establish if it's negative
+    Or8Way(in=msb, out=msbOr); // keep comparing bits to end up with a single output
+    Or8Way(in=lsb, out=lsbOr); // same ^
+    Or(a=msbOr, b=lsbOr, out=finalOr); // compare msb with lsb
+    // zr -> 1 if (out == 0), 0 otherwise
+    Not(in=finalOr, out=zr); // take the previous output and negate
 }
