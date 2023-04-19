@@ -14,5 +14,8 @@ CHIP Bit {
     OUT out;
 
     PARTS:
-    // Put your code here:
+    // choose either the DFF output value or the current input value
+    Mux(a=dffOut, b=in, sel=load, out=muxOut);
+    // store the value
+    DFF(in=muxOut, out=dffOut, out=out);
 }
