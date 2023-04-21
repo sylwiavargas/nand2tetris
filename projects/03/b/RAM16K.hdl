@@ -15,5 +15,13 @@ CHIP RAM16K {
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+    // 1. use msb to select the correct RAM4K (address is just 14 bits)
+    DMux4Way(in=load, sel=address[12..13], a=loadRAM0, b=loadRAM1, c=loadRAM2, d=loadRAM3);
+    // 2. use lsb select where the value will be stored
+    RAM4K(in=in, load=loadRAM0, address=address[0..11], out=RAM0);
+    RAM4K(in=in, load=loadRAM1, address=address[0..11], out=RAM1);
+    RAM4K(in=in, load=loadRAM2, address=address[0..11], out=RAM2);
+    RAM4K(in=in, load=loadRAM3, address=address[0..11], out=RAM3);
+    // 3. use msb to select the correct RAM4K which will output
+    Mux4Way16(a=RAM0, b=RAM1, c=RAM2, d=RAM3, sel=address[12..13], out=out);
 }
