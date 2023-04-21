@@ -16,5 +16,15 @@ CHIP PC {
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+    // 1. add one to the counter
+    Inc16(in=continue, out=addOne);
+    // three Mux16s are selecting for: incrementing output, loading a new value, resetting. 
+    // 2. choose if we continue with the loop or increment
+    Mux16(a=continue, b=addOne, sel=inc, out=incremented);
+    // 3. load will use the input value as output
+    Mux16(a=incremented, b=in, sel=load, out=loadPC);
+    // 4. reset will zero the output
+    Mux16(a=loadPC, b=false, sel=reset, out=resetPC);
+    // 5. the value is stored in register - the load needs to be set to "true" so the selected value is always loaded
+    Register(in=resetPC, load=true, out=out, out=continue);
 }
